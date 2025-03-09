@@ -1,0 +1,36 @@
+{
+  "grammars": [
+    {
+      "name": "structurizr_dsl",
+      "camelcase": "StructurizrDSL",
+      "scope": "source.structurizr_dsl",
+      "file-types": [
+        ".dsl"
+      ],
+      "injection-regex": "^structurizr_dsl$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "AGPLv3",
+    "description": "Grammar for Structurizr DSL",
+    "authors": [
+      {
+        "name": "Roger Steve Ruiz",
+        "email": "hi@rog.gr",
+        "url": "https://rog.gr/"
+      }
+    ],
+    "links": {
+      "repository": "https://git.sr.ht/~rogeruiz/scuttle"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}
