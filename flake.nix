@@ -20,6 +20,8 @@
           packages = [
             pkgs.nodejs_22
             pkgs.tree-sitter
+            pkgs.entr
+            pkgs.just
           ];
         };
       }
