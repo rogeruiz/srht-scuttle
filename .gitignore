@@ -1,0 +1,17 @@
+# OS and Editor files
+.DS_Store
+*.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+.svn
+.idea
+
+# Local working directories
+work/
+tmp/
+result
+result/
+out/
+target/
+dist/

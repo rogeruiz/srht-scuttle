@@ -1,0 +1,12 @@
+image: alpine/latest
+secrets:
+  - 5fd6bbf1-8791-4c37-8e1f-2d423d1c6a12
+environment:
+  GH_REPO: srht-scuttle
+  GH_USER: rogeruiz
+  SH_REPO: scuttle
+tasks:
+  - mirror-to-github: |
+      cd ~/"${SH_REPO}"
+      git config --global credential.helper store
+      git push --mirror "https://github.com/${GH_USER}/${GH_REPO}"

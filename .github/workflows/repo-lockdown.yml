@@ -1,0 +1,37 @@
+name: 'Repo Lockdown'
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+  schedule:
+    - cron: '20 * * * *'
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  action:
+    name: Imponer clausura de'l repositorio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dessant/repo-lockdown@v4
+        with:
+          issue-comment: >
+            Este repository **no acepta** propuestas través _GitHub_,
+            mire al README pa' detalles sobre contribuyendo través _sourcehut_.
+
+            ---
+
+            This repository **does not accept** bug reports on _GitHub_,
+            see the README for details about contributing via sourcehut.
+          pr-comment: >
+            Este repository **no acepta** solicitudes de cambios través _GitHub_,
+            mire al README pa' detalles sobre contribuyendo través _sourcehut_.
+
+            ---
+
+            This repository **does not accept** pull requests on _ GitHub_,
+            see the README for details about contributing via _sourcehut_.
