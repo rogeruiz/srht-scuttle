@@ -8,10 +8,32 @@
 // @ts-check
 
 module.exports = grammar({
-  name: "structurizr_dsl",
+  name: 'structurizr_dsl',
 
+  /**
+   * @description Tree-sitter rules definitions
+   */
   rules: {
-    // TODO: add the actual grammar rules
-    source_file: $ => "hello"
-  }
+
+    dsl: ($) => choice($.comment),
+
+
+    /**
+     * @description Defines supported comment lines and comment blocks
+     * @link https://docs.structurizr.com/dsl/basics#comments
+     */
+    comment: (_) => token(choice(
+      // BUG: Esta recogiendo los colores hex como `#bada55` y lo tengo que
+      // cambiar antes de activarlo
+      // seq('#', /\\(.|\r?\n)|[^\\\n]*/),
+      // BUG: Esta recogiendo los `//` de un URL pa' las definiciones de URL y
+      // lo tengo que cambiar antes de activarlo
+      // seq('//', /\\(.|\r?\n)|[^\\\n]*/),
+      seq(
+        '/*',
+        /[^*]*\*+([^/*][^*]*\*+)*/,
+        '/'
+      ),
+    ))
+  },
 });
