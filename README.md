@@ -20,9 +20,12 @@
 ```
 
 Scuttle is a batteries-included Structurizr DSL LSP server implementation along
-with a Tree Sitter definitions that closely follow the Structurizr DSL
+with a Tree-sitter definitions that closely follow the Structurizr DSL
 specification. The main goal of this project is to have the best development
 environment for authoring and maintaining Structurizr DSL files.
+
+This project is a monorepo housing all the necessary code to have a
+full-featured Structurizr DSL LSP & Tree-sitter grammar.
 
 ## Install
 
