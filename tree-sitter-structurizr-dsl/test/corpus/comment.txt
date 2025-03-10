@@ -1,0 +1,37 @@
+================================
+Alternative single-line comments
+================================
+
+// This is a comment
+
+---
+
+(dsl
+  (alt_single_comment
+    (comment_text)))
+
+====================
+Single-line comments
+====================
+
+# This is a comment
+
+---
+
+(dsl
+  (single_comment
+    (comment_text)))
+
+====================
+Multi-line comments
+====================
+
+/*
+  This is a multi-line comment.
+*/
+
+---
+
+(dsl
+  (block_comment
+    (comment_text)))

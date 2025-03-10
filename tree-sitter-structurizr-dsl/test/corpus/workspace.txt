@@ -1,0 +1,83 @@
+====================
+Workspace definition bare
+====================
+
+workspace {
+}
+
+---
+
+(dsl
+  (workspace_definition
+    (block)))
+
+====================
+Workspace definition with name
+====================
+
+workspace "optionalName" {
+}
+
+---
+
+(dsl
+  (workspace_definition
+    (string)
+    (block)))
+
+====================
+Workspace definition with name & description
+====================
+
+workspace "optionalName" "optionalDescription" {
+}
+
+---
+
+(dsl
+  (workspace_definition
+    (string)
+    (string)
+    (block)))
+
+====================
+Workspace definition with extends <file>
+====================
+
+workspace extends "./workspace.json" {
+}
+
+---
+
+(dsl
+  (workspace_extend_definition
+    (file_path)
+    (block)))
+
+====================
+Workspace definition with extends <file>
+====================
+
+workspace extends "./workspace.dsl" {
+}
+
+---
+
+(dsl
+  (workspace_extend_definition
+    (file_path)
+    (block)))
+
+====================
+Workspace definition with extends <url>
+====================
+
+workspace extends "https://example.com/workspace.json" {
+}
+
+---
+
+(dsl
+  (workspace_extend_definition
+    (url_path)
+    (block)))
