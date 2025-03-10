@@ -11,6 +11,7 @@ alias tsg := ts-generar
 alias tsp := ts-procesar
 alias tse := ts-ensayo
 alias tsm := ts-mire
+alias tsme := ts-mire-ensayos
 
 [doc('Genera la gramática para Tree-sitter')]
 [working-directory: './tree-sitter-structurizr-dsl']
@@ -35,3 +36,9 @@ ts-procesar archivo: (ts-generar)
 [group('dev')]
 ts-mire pilas receta:
     {{ pilas }} | entr just {{ receta }}
+
+[doc('Ayuda con desarrollo de ensayos')]
+[working-directory: './tree-sitter-structurizr-dsl']
+[group('dev')]
+ts-mire-ensayos:
+    just tsm "{ ls grammar.js; ls test/**/*.txt; }" "tse"
