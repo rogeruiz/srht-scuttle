@@ -1,0 +1,45 @@
+==================
+Constant variables
+==================
+
+!const MY_const "MY_const value"
+
+---
+
+(dsl
+  (constant
+    (identifier)
+    (string)))
+
+==================
+Regular variables
+==================
+
+!var MY_VAR "MY_var value"
+
+---
+
+(dsl
+  (variable
+    (identifier)
+    (string)))
+
+===========================
+Variables and substitution
+:skip
+===========================
+
+!const ORGANISATION_NAME "Organisation"
+!const GROUP_NAME "Group"
+
+workspace {
+
+    model {
+        group "${ORGANISATION_NAME} - ${GROUP_NAME}" {
+            user = person "User"
+        }
+    }
+
+}
+
+---
