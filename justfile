@@ -9,6 +9,7 @@ alias help := default
 
 alias tsg := ts-generar
 alias tsp := ts-procesar
+alias tse := ts-ensayo
 alias tsm := ts-mire
 
 [doc('Genera la gramática para Tree-sitter')]
@@ -17,14 +18,20 @@ alias tsm := ts-mire
 ts-generar:
     tree-sitter generate
 
+[doc('Ejecute los ensayos con la gramática')]
+[working-directory: './tree-sitter-structurizr-dsl']
+[group('test')]
+ts-ensayo: (ts-generar)
+    tree-sitter test
+
 [doc('Procesa un <archivo> usando la gramática generada')]
 [working-directory: './tree-sitter-structurizr-dsl']
 [group('test')]
 ts-procesar archivo: (ts-generar)
     tree-sitter parse {{ absolute_path(join("tree-sitter-structurizr-dsl", archivo)) }}
 
-[doc('Ponga le <pilas> a un archivo y ejecute la "<receta>" incluyendo parametros')]
+[doc('Ponga le <pilas> a archivo(s) y ejecute la "<receta>" incluyendo parametros')]
 [working-directory: './tree-sitter-structurizr-dsl']
 [group('dev')]
 ts-mire pilas receta:
-    ls {{ pilas }} | entr just {{ receta }}
+    {{ pilas }} | entr just {{ receta }}

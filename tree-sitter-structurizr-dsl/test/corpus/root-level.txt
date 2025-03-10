@@ -1,0 +1,75 @@
+==================
+Constant variables
+==================
+
+!const MY_const "MY_const value"
+
+---
+
+(dsl
+  (constant
+    (identifier)
+    (string)))
+
+==================
+Regular variables
+==================
+
+!var MY_VAR "MY_var value"
+
+---
+
+(dsl
+  (variable
+    (identifier)
+    (string)))
+
+================================
+Alternative single-line comments
+================================
+
+// This is a comment
+
+---
+
+(dsl
+  (alt_single_comment))
+
+====================
+Single-line comments
+====================
+
+# This is a comment
+
+---
+
+(dsl
+  (single_comment))
+
+====================
+Multi-line comments
+====================
+
+/*
+  This is a multi-line comment.
+*/
+
+---
+
+(dsl
+  (multi_comment))
+
+====================
+Workspace definition
+====================
+
+workspace "optionalName" "optionalDescription" {
+}
+
+---
+
+(dsl
+  (workspace_definition
+    (string)
+    (string)
+    (block)))
