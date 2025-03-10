@@ -11,9 +11,10 @@ const NEWLINE = /\r?\n/;
 const ANYTHING_OR_NONE = /[^\n\r]*/;
 const ANYTHING = /[^\n\r]+/;
 const NUMBER = /[0-9]+(\.[0-9]+)?/;
-const WORD = /[0-9a-zA-Z]+/;
 const NAME = /[a-zA-Z0-9\-_\.]+/;
+const HEX_COLOR = /#([0-9A-Za-f]{3}){1,2}/;
 const QUOTES = /"|'/;
+const TEXT = /[^"'\\\r\n]+/;
 
 /**
  *
@@ -40,107 +41,88 @@ module.exports = grammar({
    */
   rules: {
 
-    dsl: ($) => repeat($._definition),
+    dsl: $ => repeat($._definition),
 
-    _definition: ($) => choice(
+    _definition: $ => choice(
       $.constant,
       $.variable,
-      $.workspace_definition,
-      $.comment
+      $._comment,
+      $.workspace_definition
     ),
 
-    workspace_definition: ($) =>
+    workspace_definition: $ =>
       seq(
         'workspace',
-        repeat1($.value),
+        repeat($.string),
         $.block
       ),
 
-    _expression: ($) =>
+    constant: $ => seq('!const', $._expression, $._value),
+
+    variable: $ => seq('!var', $._expression, $._value),
+
+    _expression: $ =>
       choice(
-        $.identifier,
+        $.identifier
       ),
 
-    _statement: ($) =>
-      choice(
-        $._children
-      ),
-
-    block: ($) =>
+    block: $ =>
       seq(
         '{',
-        repeat($._statement),
+        repeat($._workspace_children),
         '}'
       ),
-    identifier: (_) => /[A-Za-z_]+/,
-    value: ($) =>
-      seq(
-        QUOTES,
-        ANYTHING,
-        repeat($.substr),
-        ANYTHING,
-        QUOTES,
+
+    _value: $ =>
+      choice(
+        $.string,
+        // $.hexcode_color,
+        // $.substitution,
+        // $.number
       ),
 
-    substr: ($) => seq(
-      '${',
-      $.identifier,
-      '}'
-    ),
+    identifier: _ => token(NAME),
 
-    constant: ($) =>
-      seq(
-        '\!const',
-        $.identifier,
-        $.value
-      ),
+    number: _ => token(NUMBER),
 
-    variable: ($) =>
-      seq(
-        '\!var',
-        $.identifier,
-        $.value
-      ),
+    string: _ => seq(QUOTES, TEXT, QUOTES),
 
-    _children: ($) =>
+    hexcode_color: _ => token(HEX_COLOR),
+
+    substitution: $ => seq('${', $._expression, '}'),
+
+    _workspace_children: $ =>
       choice(
         $.prop_name,
-        $.prop_description,
+        $.prop_description
       ),
 
-    prop_name: ($) =>
-      seq(
-        'name',
-        $.value
-      ),
+    prop_name: $ => seq('name', $._value),
 
-    prop_description: ($) =>
-      seq(
-        'description',
-        $.value
-      ),
+    prop_description: $ => seq('description', $._value),
 
     /**
      * @description Defines supported comment lines and comment blocks
      * @link https://docs.structurizr.com/dsl/basics#comments
      */
-    comment: ($) => token(choice(
-      // BUG: Esta recogiendo los colores hex como `#bada55` y lo tengo que
-      // cambiar antes de activarlo
-      // seq('#', /\\(.|\r?\n)|[^\\\n]*/),
-      // seq(
-      //   token.immediate('#'),
-      //   alias(/[^\r\n]*/, $.text),
-      //   NEWLINE
-      // ),
-      // BUG: Esta recogiendo los `//` de un URL pa' las definiciones de URL y
-      // lo tengo que cambiar antes de activarlo
-      // seq('//', /\\(.|\r?\n)|[^\\\n]*/),
+    _comment: $ =>
+      choice(
+        $.single_comment,
+        $.alt_single_comment,
+        $.multi_comment
+      ),
+
+    alt_single_comment: _ => seq('//', ANYTHING_OR_NONE),
+
+    single_comment: _ => seq('#', ANYTHING_OR_NONE),
+
+    multi_comment: _ =>
       seq(
         '/*',
-        /[^*]*\*+([^/*][^*]*\*+)*/,
-        '/'
+        optional(NEWLINE),
+        optional(ANYTHING_OR_NONE),
+        optional(NEWLINE),
+        '*/'
       ),
-    ))
   },
 });
