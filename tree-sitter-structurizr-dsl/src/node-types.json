@@ -2,7 +2,17 @@
   {
     "type": "alt_single_comment",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "comment_text",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "block",
@@ -24,6 +34,26 @@
     }
   },
   {
+    "type": "block_comment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "comment_text",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "comment_text",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "constant",
     "named": true,
     "fields": {},
@@ -31,6 +61,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "hexcode_color",
+          "named": true
+        },
         {
           "type": "identifier",
           "named": true
@@ -56,11 +90,11 @@
           "named": true
         },
         {
-          "type": "constant",
+          "type": "block_comment",
           "named": true
         },
         {
-          "type": "multi_comment",
+          "type": "constant",
           "named": true
         },
         {
@@ -74,14 +108,13 @@
         {
           "type": "workspace_definition",
           "named": true
+        },
+        {
+          "type": "workspace_extend_definition",
+          "named": true
         }
       ]
     }
-  },
-  {
-    "type": "multi_comment",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "prop_description",
@@ -91,6 +124,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "hexcode_color",
+          "named": true
+        },
         {
           "type": "string",
           "named": true
@@ -107,6 +144,10 @@
       "required": true,
       "types": [
         {
+          "type": "hexcode_color",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         }
@@ -116,12 +157,47 @@
   {
     "type": "single_comment",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "comment_text",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "string",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "substitution",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "substitution",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "variable",
@@ -131,6 +207,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "hexcode_color",
+          "named": true
+        },
         {
           "type": "identifier",
           "named": true
@@ -162,6 +242,29 @@
     }
   },
   {
+    "type": "workspace_extend_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "file_path",
+          "named": true
+        },
+        {
+          "type": "url_path",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "!const",
     "named": false
   },
@@ -170,7 +273,19 @@
     "named": false
   },
   {
+    "type": "\"",
+    "named": false
+  },
+  {
     "type": "#",
+    "named": false
+  },
+  {
+    "type": "${",
+    "named": false
+  },
+  {
+    "type": "'",
     "named": false
   },
   {
@@ -190,12 +305,28 @@
     "named": false
   },
   {
+    "type": "extends",
+    "named": false
+  },
+  {
+    "type": "file_path",
+    "named": true
+  },
+  {
+    "type": "hexcode_color",
+    "named": true
+  },
+  {
     "type": "identifier",
     "named": true
   },
   {
     "type": "name",
     "named": false
+  },
+  {
+    "type": "url_path",
+    "named": true
   },
   {
     "type": "workspace",
