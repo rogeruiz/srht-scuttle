@@ -11,30 +11,15 @@ const NEWLINE = /\r?\n/;
 const ANYTHING_OR_NONE = /[^\n\r]*/;
 const ANYTHING = /[^\n\r]+/;
 const NUMBER = /[0-9]+(\.[0-9]+)?/;
-const NAME = /[a-zA-Z0-9\-_\.]+/;
-const HEX_COLOR = /#([0-9A-Za-f]{3}){1,2}/;
+// const VALID_NAME = token(/[a-zA-Z_*][a-zA-Z0-9\-_\.]+/);
+const VALID_NAME = token(/[a-zA-Z0-9\-_\.]+/);
+const HEX_COLOR = token(/#([0-9A-Za-f]{3}){1,2}/);
 const QUOTES = /"|'/;
 const TEXT = /[^"'\\\r\n]+/;
 
-/**
- *
- * @name lower
- * @description Makes the string lower-case since Structurizr is case-insensitive.
- * @link https://docs.structurizr.com/dsl/basics#dsl-rules
- * @param {string} k - The keyword being evaluated
- * @returns {string} - A lowercase version of the string
- */
-function lower(k) {
-  if (typeof k !== 'string') {
-    throw `Expected ${k} to be a string.`
-  }
-  return k.toLowerCase();
-}
-
 module.exports = grammar({
   name: 'structurizr_dsl',
-
-  word: ($) => $.identifier,
+  word: $ => $.identifier,
 
   /**
    * @description Tree-sitter rules definitions
@@ -47,13 +32,29 @@ module.exports = grammar({
       $.constant,
       $.variable,
       $._comment,
-      $.workspace_definition
+      $.workspace_definition,
+      $.workspace_extend_definition
     ),
 
     workspace_definition: $ =>
       seq(
         'workspace',
         repeat($.string),
+        $.block
+      ),
+
+    model_definition: $ =>
+      seq(
+        'workspace',
+        repeat($.string),
+        $.block
+      ),
+
+    workspace_extend_definition: $ =>
+      seq(
+        'workspace',
+        'extends',
+        $._extends_path,
         $.block
       ),
 
@@ -76,20 +77,30 @@ module.exports = grammar({
     _value: $ =>
       choice(
         $.string,
-        // $.hexcode_color,
-        // $.substitution,
+        $.hexcode_color
         // $.number
       ),
 
-    identifier: _ => token(NAME),
+    identifier: _ => token(VALID_NAME),
 
     number: _ => token(NUMBER),
+    string: $ => seq(
+      choice('"', "'"),
+      repeat(
+        choice(
+          prec(2, $.substitution),
+          prec(1, /[^"'$]+/)
+        )
+      ),
+      choice('"', "'")
+    ),
+    substitution: $ => seq('${', $.identifier, '}'),
 
-    string: _ => seq(QUOTES, TEXT, QUOTES),
+    _extends_path: $ => choice($.url_path, $.file_path),
+    url_path: _ => /("|')http(s)?:\/\/.+("|')/,
+    file_path: _ => /("|')\.\/workspace\.(?:json|dsl)("|')/,
 
     hexcode_color: _ => token(HEX_COLOR),
-
-    substitution: $ => seq('${', $._expression, '}'),
 
     _workspace_children: $ =>
       choice(
@@ -107,22 +118,19 @@ module.exports = grammar({
      */
     _comment: $ =>
       choice(
-        $.single_comment,
         $.alt_single_comment,
-        $.multi_comment
+        $.single_comment,
+        $.block_comment
       ),
 
-    alt_single_comment: _ => seq('//', ANYTHING_OR_NONE),
-
-    single_comment: _ => seq('#', ANYTHING_OR_NONE),
-
-    multi_comment: _ =>
+    alt_single_comment: $ => seq('//', optional($.comment_text)),
+    single_comment: $ => seq('#', optional($.comment_text)),
+    block_comment: $ =>
       seq(
         '/*',
-        optional(NEWLINE),
-        optional(ANYTHING_OR_NONE),
-        optional(NEWLINE),
+        optional($.comment_text),
         '*/'
       ),
+    comment_text: _ => repeat1(/.|\r|\n/),
   },
 });
