@@ -1,45 +1,37 @@
 ================================================================================
-Constant variables
+Alternative single-line comments
 ================================================================================
 
-!const MY_const "MY_const value"
+// This is a comment
 
 --------------------------------------------------------------------------------
 
 (dsl
-  (constant
-    (identifier)
-    (string)))
+  (alt_single_comment
+    (comment_text)))
 
 ================================================================================
-Regular variables
+Single-line comments
 ================================================================================
 
-!var MY_VAR "MY_var value"
+# This is a comment
 
 --------------------------------------------------------------------------------
 
 (dsl
-  (variable
-    (identifier)
-    (string)))
+  (single_comment
+    (comment_text)))
 
 ================================================================================
-Variables and substitution
-:skip
+Multi-line comments
 ================================================================================
 
-!const ORGANISATION_NAME "Organisation"
-!const GROUP_NAME "Group"
-
-workspace {
-
-    model {
-        group "${ORGANISATION_NAME} - ${GROUP_NAME}" {
-            user = person "User"
-        }
-    }
-
-}
+/*
+  This is a multi-line comment.
+*/
 
 --------------------------------------------------------------------------------
+
+(dsl
+  (block_comment
+    (comment_text)))
